@@ -59,7 +59,5 @@ func newClient(h *Hub, c *websocket.Conn) {
 	client.hub.add <- client
 	// listen for writes in goroutine
 	go client.write()
-	// FIXME block handler to keep connnection alive
-	// listen for messages from connnection
 	client.read()
 }
