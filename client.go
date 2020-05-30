@@ -5,9 +5,6 @@ import (
 	"log"
 )
 
-// TextType for WebSocket
-const TextType = 1
-
 // Client for handling read/write
 type Client struct {
 	conn *websocket.Conn // fiber/fasthttp websocket connnection
@@ -48,14 +45,14 @@ func (c *Client) write() {
 	}()
 	for message := range c.send {
 		// send current message from channel
-		err := c.conn.WriteMessage(TextType, message)
+		err := c.conn.WriteMessage(websocket.TextMessage, message)
 		if err != nil {
 			return
 		}
 		// send all others from channel buffer
 		n := len(c.send)
 		for i := 0; i < n; i++ {
-			err = c.conn.WriteMessage(TextType, <-c.send)
+			err = c.conn.WriteMessage(websocket.TextMessage, <-c.send)
 			if err != nil {
 				return
 			}
